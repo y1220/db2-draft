@@ -11,6 +11,27 @@
   </head>
 
   <body>
+  <div class="topnav" style= "background-color: #5F9EA0;">
+    <%= link_to("Telcom","/homes/index", class:"active")%>&nbsp;&nbsp;
+    <div class="right">
+      <%= link_to("Customer","/customers/index", class:"menu")%>&nbsp;&nbsp;
+      <%= link_to("Service","/products/index", class:"menu")%>&nbsp;&nbsp;
+      <%= link_to("Order","/customers/index", class:"menu")%>&nbsp;&nbsp;
+      <%= link_to("Username","/customers/index", class:"menu")%>
+    </div>
+  </div>
+
+  <% if flash[:notice]%>
+      <div class="flash">
+        <%= flash[:notice]%>
+      </div>
+  <% end %>
+
+  <% if flash[:notice]%>
+      <div class="flash">
+        <%= flash[:notice]%>
+      </div>
+  <% end %>
     <%= yield %>
   </body>
 </html>

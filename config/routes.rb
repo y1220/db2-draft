@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root 'home#index'
+  get 'home/index'
   get 'optional_products/index'
   get 'alerts/index'
   get 'products/index'
