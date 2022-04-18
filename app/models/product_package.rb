@@ -1,0 +1,2 @@
+class ProductPackage < ApplicationRecord
+end

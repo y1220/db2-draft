@@ -1,0 +1,2 @@
+module OptionalProductsHelper
+end
