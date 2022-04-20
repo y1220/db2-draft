@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_18_195438) do
+ActiveRecord::Schema.define(version: 2022_04_19_060734) do
 
   create_table "alerts", force: :cascade do |t|
     t.integer "customer_id", null: false
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2022_04_18_195438) do
     t.boolean "isSolvent"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "password"
   end
 
   create_table "employees", force: :cascade do |t|

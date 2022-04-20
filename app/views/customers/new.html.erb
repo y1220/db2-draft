@@ -1,0 +1,20 @@
+<h1 class="form-heading">Registration</h1>
+<div class="form">
+    <div class="form-body">
+    <% @customer.errors.full_messages.each do |message| %>
+        <div class="form-error">
+        <%= message %>
+        </div>
+    <% end %>
+    <%= form_tag("/customers") do%>
+        <p>username</p>
+        <input class="form-control" name="customer_name" required="true">
+        <p>email</p>
+        <input class="form-control" placeholder="has to include @ and ." name="email" required="true">
+        <p>password</p>
+        <input class="form-control" placeholder="4-8 numbers or characters" name="customer_password" type="password" required="true">
+        <p></p>
+        <input class="btn btn-success btn-lg btn-block mb-3" type="submit" value="send">
+    <%end%>
+    </div>
+</div>

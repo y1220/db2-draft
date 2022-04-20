@@ -1,0 +1,16 @@
+<div class="user">
+    <center>
+    <h2><%= @customer.username%></h2>
+    <p><%= @customer.email%></p>
+    <% if @customer.id==@current_user.id%>
+        <div class="col-md-8">
+            <a type="button" href="/customers/<%=@customer.id%>/edit" class= "btn btn-primary">
+                Modify
+            </a>
+            <a type="button" href="/customers/<%=@customer.id%>"
+                                data-toggle="modal" data-target="#deleteUser" class= "btn btn-danger">
+                Delete
+            </a>
+        </div>
+    <%end%></center>
+</div>
