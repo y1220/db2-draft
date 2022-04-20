@@ -19,12 +19,12 @@
       <%= link_to("Customer","/customers/index", class:"menu")%>&nbsp;&nbsp;
       <%= link_to("Service","/products/index", class:"menu")%>&nbsp;&nbsp;
       <%= link_to("Order","/customers/index", class:"menu")%>&nbsp;&nbsp;
-      <%= link_to("#{@name}","/customers/login_form", class:"menu")%>&nbsp;&nbsp;
+
       <% if @name == "Login"%>
       <%= link_to("Register","/customers/register", class:"menu")%>
       <% else %>
+      <%= link_to("#{@name}","/customers/personal/#{@current_user.id}", class:"menu")%>&nbsp;&nbsp;
       <%= link_to 'logout', customers_logout_path, method: :post %>
-<%# <%= link_to "Logout", "/customers/logout", class:"menu", method: :post%>
       <% end %>
     </div>
   </div>

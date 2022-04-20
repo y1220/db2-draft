@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
     end
 
     def authenticate_user
+        @current_user= Customer.find_by(id: session[:customer_id])
         if @current_user==nil
           redirect_to("/customers/login_form")
         end

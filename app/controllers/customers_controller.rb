@@ -43,7 +43,7 @@ class CustomersController < ApplicationController
       if @customer
         session[:customer_id] = @customer.id
         flash[:notice]= "Loggined successfully!"
-        redirect_to("/customers/index")
+        redirect_to("/customers/personal/#{@customer.id}")
       else
         flash[:notice]= "Something went wrong..try again!"
         render("/customers/login_form")
