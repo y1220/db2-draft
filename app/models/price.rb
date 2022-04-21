@@ -1,4 +1,4 @@
 class Price < ApplicationRecord
-  belongs_to :validityPeriod
-  belongs_to :service
+  belongs_to :validity_period
+  belongs_to :product
 end

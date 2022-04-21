@@ -11,24 +11,25 @@
   </head>
 
   <body>
-  <div class="topnav" style= "background-color: #5F9EA0;">
-    <div class="left">
-    <%= link_to("Telcom","/home/index", class:"active")%>&nbsp;&nbsp;
-    </div>
-    <div class="right">
-      <%= link_to("Customer","/customers/index", class:"menu")%>&nbsp;&nbsp;
-      <%= link_to("Service","/products/index", class:"menu")%>&nbsp;&nbsp;
-      <%= link_to("Order","/customers/index", class:"menu")%>&nbsp;&nbsp;
 
-      <% if @name == "Login"%>
-      <%= link_to("Register","/customers/register", class:"menu")%>
-      <% else %>
-      <%= link_to("#{@name}","/customers/personal/#{@current_user.id}", class:"menu")%>&nbsp;&nbsp;
-      <%= link_to 'logout', customers_logout_path, method: :post %>
-      <% end %>
-    </div>
-  </div>
-
+  <nav class="navbar">
+      `<ul>
+          <li><%= link_to("Telcom","/home/index")%></li>
+          <li><%= link_to("Customer","/customers/index")%></li>
+          <li><%= link_to("Service","/product_packages/index")%></li>
+          <li><%= link_to("Order","/customers/index")%></li>
+          <div class="search">
+            <% if @name == "Login"%>
+            <li><%= link_to("Register","/customers/register")%></li>
+            <% else %>
+            <li><%= link_to("#{@name}","/customers/personal/#{@current_user.id}" )%></li>
+            &nbsp;&nbsp;
+            <li><%= link_to 'logout', customers_logout_path, method: :post %></li>
+            <% end %>
+          </div>
+      </ul>
+  </nav>
+`
   <% if flash[:notice]%>
       <div class="flash">
         <%= flash[:notice]%>

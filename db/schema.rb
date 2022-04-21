@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_19_060734) do
+ActiveRecord::Schema.define(version: 2022_04_21_185810) do
 
   create_table "alerts", force: :cascade do |t|
     t.integer "customer_id", null: false
@@ -42,20 +42,29 @@ ActiveRecord::Schema.define(version: 2022_04_19_060734) do
 
   create_table "prices", force: :cascade do |t|
     t.integer "amount"
-    t.integer "validityPeriod_id", null: false
-    t.integer "service_id", null: false
+    t.integer "validity_period_id", null: false
+    t.integer "product_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["service_id"], name: "index_prices_on_service_id"
-    t.index ["validityPeriod_id"], name: "index_prices_on_validityPeriod_id"
+    t.index ["product_id"], name: "index_prices_on_product_id"
+    t.index ["validity_period_id"], name: "index_prices_on_validity_period_id"
+  end
+
+  create_table "product_compositions", force: :cascade do |t|
+    t.integer "product_package_id", null: false
+    t.integer "product_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["product_id"], name: "index_product_compositions_on_product_id"
+    t.index ["product_package_id"], name: "index_product_compositions_on_product_package_id"
   end
 
   create_table "product_packages", force: :cascade do |t|
     t.string "name"
-    t.integer "price_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["price_id"], name: "index_product_packages_on_price_id"
+    t.integer "product_composition_id"
+    t.index ["product_composition_id"], name: "index_product_packages_on_product_composition_id"
   end
 
   create_table "product_types", force: :cascade do |t|
@@ -78,7 +87,9 @@ ActiveRecord::Schema.define(version: 2022_04_19_060734) do
   end
 
   add_foreign_key "alerts", "customers"
-  add_foreign_key "prices", "services"
-  add_foreign_key "prices", "validityPeriods"
-  add_foreign_key "product_packages", "prices"
+  add_foreign_key "prices", "products"
+  add_foreign_key "prices", "validity_periods"
+  add_foreign_key "product_compositions", "product_packages"
+  add_foreign_key "product_compositions", "products"
+  add_foreign_key "product_packages", "product_compositions"
 end

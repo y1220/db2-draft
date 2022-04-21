@@ -1,2 +1,23 @@
-<h1>ProductPackages#index</h1>
-<p>Find me in app/views/product_packages/index.html.erb</p>
+<div class="main users-index">
+    <h1 class="users-heading">all product package</h1>
+    <div class="extab">
+        <table id="customers">
+            <tr>
+                <th>Product package</th>
+                <th>packages</th>
+                <th>Description</th>
+            </tr>
+        <% @packages.each do |p|%>
+            <tr>
+                <td><%= link_to(p.name,"/product_packages/#{p.id}/detail")%></td>
+                <td>
+                    <% p.products.each do |pro|%>
+                        <%= link_to(pro.name,"/product_packages/#{pro.id}/detail")%>
+                    <%end%>
+                </td>
+                <td>Description</td>
+            </tr>
+        <%end%>
+        </table>
+    </div>
+</div>
