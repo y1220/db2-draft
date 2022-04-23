@@ -1,0 +1,2 @@
+class OptionalProduct < ApplicationRecord
+end
