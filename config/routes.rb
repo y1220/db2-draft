@@ -11,14 +11,17 @@ Rails.application.routes.draw do
     post "/logout" , action: "logout"
   end
 
-  namespace :products do
+  namespace :product_packages do
     get "/index" , action: "index"
+    post "/order_type", action: "order_type"
+    get "/order_detail_form", action: "order_detail_form"
+    post "/order_detail", action: "order_detail"
   end
 
   get 'home/index'
   get 'optional_products/index'
   get 'alerts/index'
-  get 'product_packages/index'
+  get 'products/index'
   get 'orders/index'
   get 'employees/index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

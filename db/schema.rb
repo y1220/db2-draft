@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_21_185810) do
+ActiveRecord::Schema.define(version: 2022_04_23_090727) do
 
   create_table "alerts", force: :cascade do |t|
     t.integer "customer_id", null: false
@@ -38,6 +38,33 @@ ActiveRecord::Schema.define(version: 2022_04_21_185810) do
     t.string "email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "optional_product_orders", force: :cascade do |t|
+    t.integer "optional_product_id", null: false
+    t.integer "order_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["optional_product_id"], name: "index_optional_product_orders_on_optional_product_id"
+    t.index ["order_id"], name: "index_optional_product_orders_on_order_id"
+  end
+
+  create_table "optional_products", force: :cascade do |t|
+    t.string "name"
+    t.integer "monthly_fee"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "product_package_id", null: false
+    t.integer "customer_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "validity_period_id"
+    t.index ["customer_id"], name: "index_orders_on_customer_id"
+    t.index ["product_package_id"], name: "index_orders_on_product_package_id"
+    t.index ["validity_period_id"], name: "index_orders_on_validity_period_id"
   end
 
   create_table "prices", force: :cascade do |t|
@@ -87,6 +114,11 @@ ActiveRecord::Schema.define(version: 2022_04_21_185810) do
   end
 
   add_foreign_key "alerts", "customers"
+  add_foreign_key "optional_product_orders", "optional_products"
+  add_foreign_key "optional_product_orders", "orders"
+  add_foreign_key "orders", "customers"
+  add_foreign_key "orders", "product_packages"
+  add_foreign_key "orders", "validity_periods"
   add_foreign_key "prices", "products"
   add_foreign_key "prices", "validity_periods"
   add_foreign_key "product_compositions", "product_packages"

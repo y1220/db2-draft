@@ -1,0 +1,58 @@
+<div class="main users-index">
+    <h1 class="users-heading">Product Package: <%=ProductType.find(@order_type).name%></h1>
+    <div class="extab">
+        <table id="customers">
+        <h2>Price List</h2>
+        <tr>
+            <th>Duration</th>
+            <% @products.each do |product|%>
+                <th><%=product.name%></th>
+            <%end%>
+            <% @optionals.each do |optional|%>
+                <th><%=optional.name%></th>
+            <%end%>
+        </tr>
+        <% @durations.each_with_index do |duration, i|%>
+        <tr>
+            <td><%= duration.to_s %> months</td>
+            <% @products.each do |product|%>
+                <td>
+                    <%= Price.where(validity_period_id: i+1, product_id: product.id)[0].amount%> €<br/>
+                </td>
+            <%end%>
+            <% @optionals.each do |optional|%>
+                <td>
+                    <%= optional.monthly_fee%> €<br/>
+                </td>
+            <%end%>
+        </tr>
+        <%end%>
+        </table>
+    </div>
+
+    <div class="extab">
+        <div class="form-body">
+        <%= form_tag("order") do%>
+            <div class="container_a">
+                <b>1. select a duration(months)</b><br/><br/>
+                <select name="type" id="a2">
+                    <%= options_from_collection_for_select(ValidityPeriod.all, :id, :period) %>
+                </select>
+            </div>
+            <div class="container_a">
+                <b>2. select optional product</b><br/><br/>
+                    <% OptionalProduct.all.each do |product| %>
+                        <%= check_box_tag 'a4[]', product.id ,false, class: "select_a4" %>
+                        <%=  product.name %></br>
+                    <% end %>
+            </div>
+            <div class="container_a">
+                <b>3. select starting date</b><br/><br/>
+                <%= select_date(date = Date.current, options = {}, html_options = {}) %>
+            </div>
+
+            <input class="btn btn-success btn-lg btn-block mb-3" type="submit" value="next">
+        <%end%>
+        </div>
+    </div>
+</div>
