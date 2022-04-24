@@ -1,2 +1,48 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<div class="main users-index">
+    <h1>Welcome!</h1>
+    <% if @is_insolvent %>
+        <h1 class="users-heading">Unpaid list</h1>
+        <div class="extab">
+            <% @orders.each do |order|%>
+            <h2>(No. <%= order.id%>)Product Package: <%= ProductPackage.find(order.product_package_id).name%></h2>
+                <table id="customers">
+                    <tr>
+                        <th>Product</th>
+                        <th>Activated from</th>
+                        <th>Deactivated at</th>
+                    </tr>
+                <% @products= ProductPackage.find(order.product_package_id).products%>
+                <% @optional_products= order.optional_products %>
+                <% @products.each do |p|%>
+                    <tr>
+                        <td><%= p.name%></td>
+                        <td><%= order.start_date.strftime('%m-%d-%Y')%></td>
+                        <td><%= (order.start_date + order.validity_period.period.month).strftime('%m-%d-%Y')%><</td>
+                    </tr>
+                <%end%>
+                </table>
+                <br/>
+                <table id="customers">
+                    <tr>
+                        <th>Optional Product</th>
+                        <th>Activated from</th>
+                        <th>Deactivated at</th>
+                    </tr>
+                <% @optional_products.each do |p|%>
+                    <tr>
+                        <td><%= p.name%></td>
+                        <td><%= order.start_date.strftime('%m-%d-%Y')%></td>
+                        <td><%= (order.start_date + order.validity_period.period.month).strftime('%m-%d-%Y')%><</td>
+                    </tr>
+                <%end%>
+                </table>
+                <br/>
+                <div class="container_a">
+                    <b>Retry payment</b><br/><br/>
+                    <%= link_to("Go to a payment page","/orders/#{order.id}/payment")%>
+                </div>
+                <hr>
+            <%end%>
+        </div>
+    <% end %>
+</div>
