@@ -14,10 +14,12 @@
 
   <nav class="navbar">
       `<ul>
-          <li><%= link_to("Telcom","/home/index")%></li>
-          <li><%= link_to("Customer","/customers/index")%></li>
+          <li><%= link_to("Telcom","/")%></li>
+          <% if @name != "Login"%>
+          <li><%= link_to("Purchased list","/customers/activated/#{@current_user.id}")%></li>
+          <%end%>
           <li><%= link_to("Service","/product_packages/index")%></li>
-          <li><%= link_to("Order","/customers/index")%></li>
+          <li><%= link_to("Order Reset","/orders/reset")%></li>
           <div class="search">
             <% if @name == "Login"%>
             <li><%= link_to("Register","/customers/register")%></li>

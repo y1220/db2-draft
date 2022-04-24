@@ -12,7 +12,7 @@ class CustomersController < ApplicationController
 
   def create
       @customer = Customer.new # Needed for printing error messages
-      @customer.assign_attributes(username: params[:customer_name], email: params[:email], password: params[:customer_password])
+      @customer.assign_attributes(username: params[:customer_name], email: params[:email], password: params[:customer_password], is_insolvent: false)
        if /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.match(params[:email])
          if /^[a-zA-Z0-9_.+-]{4,8}$/.match(params[:customer_password])
            if @customer.save
@@ -54,6 +54,16 @@ class CustomersController < ApplicationController
     session[:customer_id] = nil
     flash[:notice]= "Logouted successfully!"
     redirect_to("/customers/login_form")
+  end
+
+  def activated
+    @customer = Customer.find(session[:customer_id])
+    if @customer
+      @orders= @customer.orders
+    else
+      flash[:notice]= "Something went wrong..try again!"
+      render("/customers/login_form")
+    end
   end
 
 
