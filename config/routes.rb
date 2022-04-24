@@ -18,11 +18,21 @@ Rails.application.routes.draw do
     post "/order_detail", action: "order_detail"
   end
 
+  namespace :orders do
+    get "/index" , action: "index"
+    get "/:id/confirm_form", action: "confirm_form"
+    post "/:id/confirm", action: "confirm"
+    get "/:id/payment", action: "payment"
+    get "/payment/:id/success", action: "payment_success"
+    get "/payment/:id/fail", action: "payment_fail"
+  end
+
+
+
   get 'home/index'
   get 'optional_products/index'
   get 'alerts/index'
   get 'products/index'
-  get 'orders/index'
   get 'employees/index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
