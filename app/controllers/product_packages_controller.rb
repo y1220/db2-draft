@@ -1,6 +1,7 @@
 class ProductPackagesController < ApplicationController
-
+  protect_from_forgery with: :null_session
   def index
+    session[:ordertype]=nil
     @packages = ProductPackage.all
   end
 
@@ -20,7 +21,9 @@ class ProductPackagesController < ApplicationController
   def order_detail
     @order = Order.new
     @order.assign_attributes(product_package_id: session[:ordertype], customer_id: session[:customer_id],
-      validity_period_id: params[:duration], start_date: params[:start_date])
+      validity_period_id: params[:duration])
+      d=DateTime.new(params[:event]["start_date(1i)"].to_i, params[:event]["start_date(2i)"].to_i, params[:event]["start_date(3i)"].to_i)
+      @order.start_date = d
       if @order.save
           [1,2,3].each do |i|
             if params["optionals#{i}"]

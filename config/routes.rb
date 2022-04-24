@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     get "/register" , action: "new"
     post "/" , action: "create"
     get "/personal/:id" , action: "show"
+    get "/activated/:id" , action: "activated"
     get "/login_form" , action: "login_form"
     post "/login" , action: "login"
     post "/logout" , action: "logout"
@@ -25,11 +26,11 @@ Rails.application.routes.draw do
     get "/:id/payment", action: "payment"
     get "/payment/:id/success", action: "payment_success"
     get "/payment/:id/fail", action: "payment_fail"
+    get "/reset", action: "reset"
   end
 
 
-
-  get 'home/index'
+  get '/' => "home#index"
   get 'optional_products/index'
   get 'alerts/index'
   get 'products/index'

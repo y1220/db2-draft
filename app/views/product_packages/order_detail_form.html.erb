@@ -1,5 +1,5 @@
 <div class="main users-index">
-    <h1 class="users-heading">Product Package: <%=ProductType.find(@order_type).name%></h1>
+    <h1 class="users-heading">Product Package: <%=ProductPackage.find(@order_type).name%></h1>
     <div class="extab">
         <table id="customers">
         <h2>Price List</h2>
@@ -48,7 +48,7 @@
             </div>
             <div class="container_a">
                 <b>3. select starting date</b><br/><br/>
-                <%= date_select(date = Date.current, :start_date) %>
+                <%= date_select( :event ,:start_date) %>
             </div>
 
             <input class="btn btn-success btn-lg btn-block mb-3" type="submit" value="next">

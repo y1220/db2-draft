@@ -26,7 +26,7 @@
             <div class="container_a">
                 <b>please select a product type</b><br/><br/>
                 <select name="ordertype" id="ordertype">
-                    <%= options_from_collection_for_select(ProductType.all, :id, :name) %>
+                    <%= options_from_collection_for_select(ProductPackage.all, :id, :name) %>
                 </select>
             </div>
             <input class="btn btn-success btn-lg btn-block mb-3" type="submit" value="next">
