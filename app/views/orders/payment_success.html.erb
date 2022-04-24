@@ -1,0 +1,12 @@
+<div class="main users-index">
+    <h1 class="users-heading">Payment Succsess</h1>
+    <div class="extab">
+        <h2>Product Package: <%= ProductPackage.find(@order.product_package_id).name%></h2>
+        <% ["SUCCESS", "FAIL"].each do |result|%>
+            <div class="container_a">
+                <b><%= result%> scenario</b><br/><br/>
+                <%= link_to("#{result}","/orders/payment/#{@order.id}/#{result.downcase}" )%>
+            </div>
+        <%end%>
+    </div>
+</div>

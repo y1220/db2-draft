@@ -32,23 +32,23 @@
 
     <div class="extab">
         <div class="form-body">
-        <%= form_tag("order") do%>
+        <%= form_tag("order_detail") do%>
             <div class="container_a">
                 <b>1. select a duration(months)</b><br/><br/>
-                <select name="type" id="a2">
+                <select name="duration" id="a2">
                     <%= options_from_collection_for_select(ValidityPeriod.all, :id, :period) %>
                 </select>
             </div>
             <div class="container_a">
                 <b>2. select optional product</b><br/><br/>
-                    <% OptionalProduct.all.each do |product| %>
-                        <%= check_box_tag 'a4[]', product.id ,false, class: "select_a4" %>
+                    <% OptionalProduct.all.each_with_index do |product, i| %>
+                        <%= check_box_tag "optionals#{i+1}", product.id ,false %>
                         <%=  product.name %></br>
                     <% end %>
             </div>
             <div class="container_a">
                 <b>3. select starting date</b><br/><br/>
-                <%= select_date(date = Date.current, options = {}, html_options = {}) %>
+                <%= date_select(date = Date.current, :start_date) %>
             </div>
 
             <input class="btn btn-success btn-lg btn-block mb-3" type="submit" value="next">

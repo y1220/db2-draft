@@ -9,10 +9,10 @@
             </tr>
         <% @packages.each do |p|%>
             <tr>
-                <td><%= link_to(p.name,"/product_packages/#{p.id}/detail")%></td>
+                <td><%= p.name%></td>
                 <td>
                     <% p.products.each do |pro|%>
-                        <%= link_to(pro.name,"/product_packages/#{pro.id}/detail")%>
+                        <%= pro.name%></br>
                     <%end%>
                 </td>
                 <td>Description</td>
@@ -23,13 +23,6 @@
     <div class="extab">
         <div class="form-body">
         <%= form_tag("order_type") do%>
-            <div class="container_a">
-                <b>please select a product type</b><br/><br/>
-                    <% ProductType.all.each do |productType| %>
-                        <%= check_box_tag 'a4[]', productType.id ,false, class: "select_a4" %>
-                        <%=  productType.name %></br>
-                    <% end %>
-            </div>
             <div class="container_a">
                 <b>please select a product type</b><br/><br/>
                 <select name="ordertype" id="ordertype">

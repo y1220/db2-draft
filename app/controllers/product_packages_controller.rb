@@ -19,22 +19,23 @@ class ProductPackagesController < ApplicationController
 
   def order_detail
     @order = Order.new
-      @order.assign_attributes(username: params[:customer_name], email: params[:email], password: params[:customer_password])
-       if /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.match(params[:email])
-         if /^[a-zA-Z0-9_.+-]{4,8}$/.match(params[:customer_password])
-           if @customer.save
-             session[:customer_id]=@customer.id
-             flash[:notice]= "Thank you for the registration!"
-             redirect_to("/customers/personal/#{@customer.id}")
-           else
-             show_error("Something went wrong..try again!","customers/new")
-           end
-         else
-           show_error("Inserted password is not valid..try again!","customers/new")
-         end
-       else
-         show_error("Inserted email is not valid..try again!","customers/new")
-       end
+    @order.assign_attributes(product_package_id: session[:ordertype], customer_id: session[:customer_id],
+      validity_period_id: params[:duration], start_date: params[:start_date])
+      if @order.save
+          [1,2,3].each do |i|
+            if params["optionals#{i}"]
+              @order_optional = OptionalProductOrder.new
+              @order_optional.assign_attributes(optional_product_id: i,
+              order_id: @order.id)
+              @order_optional.save
+            end
+          end
+        session[:ordertype]=nil
+        flash[:notice]= "Thank you for your order!"
+        redirect_to("/orders/#{@order.id}/confirm_form")
+      else
+        show_error("Something went wrong..try again!","/product_packages/order_type")
+      end
   end
 
   private  ## has to be the bottom of the page not to let other method as private one

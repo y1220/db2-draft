@@ -1,0 +1,41 @@
+<div class="main users-index">
+    <h1 class="users-heading">Confirm the order</h1>
+    <div class="extab">
+        <table id="customers">
+        <h2>Order details</h2>
+        <tr>
+            <th>Package</th>
+            <th>Package price</th>
+            <th>Validity Period</th>
+            <th>Optional Product</th>
+            <th>Each Prices</th>
+            <th>Total Price</th>
+        </tr>
+        <tr>
+            <td><%= @package.name %></td>
+            <td><%= @prices.inject(:+)%></td>
+
+            <td><%= ValidityPeriod.find(@order.validity_period_id).period %> months</td>
+            <td><% @order.optional_products.each do |product| %>
+                <%=  product.name %></br>
+            <% end %></td>
+            <td><% @order.optional_products.each do |product| %>
+                <%=  product.monthly_fee%></br>
+            <% end %></td>
+            <td><%= @total1 + @total2 %></td>
+        </tr>
+
+        </table>
+    </div>
+
+    <div class="extab">
+        <div class="form-body">
+        <%= form_tag("confirm") do%>
+            <div class="container_a">
+                <b>By clicking a confirm button, you will be navigated to the payment page</b><br/><br/>
+            </div>
+            <input class="btn btn-success btn-lg btn-block mb-3" type="submit" value="next">
+        <%end%>
+        </div>
+    </div>
+</div>
