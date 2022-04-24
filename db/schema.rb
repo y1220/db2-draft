@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_24_091716) do
+ActiveRecord::Schema.define(version: 2022_04_24_151839) do
 
   create_table "alerts", force: :cascade do |t|
     t.integer "customer_id", null: false
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2022_04_24_091716) do
   create_table "customers", force: :cascade do |t|
     t.string "username"
     t.string "email"
-    t.boolean "isSolvent"
+    t.boolean "is_insolvent"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "password"
@@ -109,6 +109,17 @@ ActiveRecord::Schema.define(version: 2022_04_24_091716) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "service_activation_schedules", force: :cascade do |t|
+    t.integer "order_id", null: false
+    t.integer "customer_id", null: false
+    t.datetime "activation_date"
+    t.datetime "deactivation_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["customer_id"], name: "index_service_activation_schedules_on_customer_id"
+    t.index ["order_id"], name: "index_service_activation_schedules_on_order_id"
+  end
+
   create_table "validity_periods", force: :cascade do |t|
     t.integer "period"
     t.datetime "created_at", precision: 6, null: false
@@ -126,4 +137,6 @@ ActiveRecord::Schema.define(version: 2022_04_24_091716) do
   add_foreign_key "product_compositions", "product_packages"
   add_foreign_key "product_compositions", "products"
   add_foreign_key "product_packages", "product_compositions"
+  add_foreign_key "service_activation_schedules", "customers"
+  add_foreign_key "service_activation_schedules", "orders"
 end
