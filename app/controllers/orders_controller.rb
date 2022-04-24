@@ -31,7 +31,7 @@ class OrdersController < ApplicationController
   def payment
     @order = Order.find_by(id: params[:id], customer_id: session[:customer_id])
     if @order
-      flash[:notice]= "Please test payment"
+      # flash[:notice]= "Please test payment"
     else
       flash[:notice]= "Something went wrong..try again!"
     end
@@ -65,8 +65,23 @@ class OrdersController < ApplicationController
       @optional_products= @order.optional_products
       @customer= Customer.find_by(id: session[:customer_id])
       @customer.is_insolvent= true
+      #@customer.num_fails= Order.where(status: false, customer_id: @customer.id).count
+      @customer.num_fails= @customer.num_fails + 1
       @customer.save
-      flash[:notice]= "Payment result FAIL!"
+      byebug
+      if @customer.num_fails > 2 &&  !Alert.find_by(customer_id: @customer.id)
+       @alert= Alert.new(customer_id: @customer.id, username: @customer.username, email: @customer.email, numOfFailedPayments: @customer.num_fails, lastRejectionDate:  DateTime.now)
+       if @alert.save
+        flash[:notice]= "You have added into alert table!"
+       end
+      elsif Alert.find_by(customer_id: @customer.id)
+        @alert= Alert.find_by(customer_id: @customer.id)
+        @alert.numOfFailedPayments = @customer.num_fails
+        @alert.lastRejectionDate = DateTime.now
+        if @alert.save
+         flash[:notice]= "Alert table has been updated!"
+        end
+      end
     else
       flash[:notice]= "Something went wrong..try again!"
     end
