@@ -46,6 +46,16 @@ class EmployeesController < ApplicationController
   end
 
   def create_optional
+    if params[:product_name] && params[:monthly_fee]
+      @package= OptionalProduct.new
+      @package.assign_attributes(name: params[:product_name], monthly_fee: params[:monthly_fee])
+      @package.save
+      flash[:notice]= "creation has been done successfully!"
+      redirect_to("/product_packages/index")
+    else
+      flash[:notice]= "Something went wrong..try again!"
+      render("/employees/create_package_form")
+    end
   end
 
   def statistics

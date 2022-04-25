@@ -1,4 +1,18 @@
-<h1 class="users-heading">Create Optional product</h1>
-<div class="extab">
-
+<h1 class="users-heading">Create Optional Product</h1>
+<div class="form users-form">
+    <div class="form-body">
+    <%= form_tag("create_optional") do%>
+        <div class="container_a">
+        </div>
+        <div class="container_a">
+            <b>1. Optional Product name</b><br/><br/>
+            <input class="form-control" placeholder="name of product" name="product_name" required="true">
+        </div>
+        <div class="container_a">
+            <b>2. Monthly fee</b><br/><br/>
+            <input class="form-control" placeholder="monthly fee" name="monthly_fee" required="true">
+        </div>
+        <input class="btn btn-success btn-lg btn-block mb-3" type="submit" value="create">
+    <%end%>
+    </div>
 </div>
