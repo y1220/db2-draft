@@ -32,7 +32,9 @@ Rails.application.routes.draw do
   namespace :employees do
     get "/index" , action: "index"
     get "/create_package_form" , action: "create_package_form"
+    post "/create_package", action: "create_package"
     get "/create_optional_form" , action: "create_optional_form"
+    post "/create_optional", action: "create_optional"
     get "/statistics" , action: "statistics"
   end
 

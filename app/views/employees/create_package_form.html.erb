@@ -1,3 +1,46 @@
 <h1 class="users-heading">Create Package</h1>
-<div class="extab">
+<div class="form users-form">
+    <div class="form-body">
+    <%= form_tag("create_package") do%>
+        <div class="container_a">
+        </div>
+        <div class="container_a">
+            <b>1. Package name</b><br/><br/>
+            <input class="form-control" placeholder="insert a name of package" name="package_name" required="true">
+        </div>
+        <div class="container_a">
+            <b>2. Products</b><br/><br/>
+            <% Product.all.each_with_index do |product, i| %>
+                <%= check_box_tag "products#{i+1}", product.id ,false %>
+                <%=  product.name %></br>
+            <% end %>
+        </div>
+        <div class="container_a">
+            <b>3. Possible validity period</b><br/><br/>
+                 <% ValidityPeriod.all.each_with_index do |validity, i| %>
+                    <%= check_box_tag "periods#{i+1}", validity.id ,false %>
+                    <%=  validity.period %> months</br>
+                <% end %>
+                <%# <b>12 Months: </b>
+                <input class="form-control" placeholder="insert a price" name="12m" required="false"><br/>
+                <b>24 Months: </b>
+                <input class="form-control" placeholder="insert a price" name="24m" required="false"><br/>
+                <b>36 Months: </b>
+                <input class="form-control" placeholder="insert a price" name="36m" required="false"><br/><br/> %>
+                <%# <b>◉ Other validity period(Not listed above)</b><br/>
+                <b>validity period: </b>
+                <input class="form-control" placeholder="insert a period" name="other_period" required="false"><br/>
+                <b>price: </b>
+                <input class="form-control" placeholder="insert a price" name="other_price" required="false"><br/> %>
+        </div>
+        <div class="container_a">
+            <b>4. Optional products</b><br/><br/>
+            <% OptionalProduct.all.each_with_index do |product, i| %>
+                <%= check_box_tag "optionals#{i+1}", product.id ,false %>
+                <%=  product.name %></br>
+            <% end %>
+        </div>
+        <input class="btn btn-success btn-lg btn-block mb-3" type="submit" value="create">
+    <%end%>
+    </div>
 </div>
