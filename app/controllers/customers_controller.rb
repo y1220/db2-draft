@@ -43,13 +43,13 @@ class CustomersController < ApplicationController
     if @emp
       session[:employee_id] = @emp.id
         flash[:notice]= "Loggined successfully!"
-        redirect_to("/employees/index")
+        redirect_to("/employees/statistics")
     else
     @customer = Customer.find_by(email: params[:email], password: params[:password])
       if @customer
         session[:customer_id] = @customer.id
         flash[:notice]= "Loggined successfully!"
-        redirect_to("/customers/personal/#{@customer.id}")
+        redirect_to("/")
       else
         flash[:notice]= "Something went wrong..try again!"
         render("/customers/login_form")
