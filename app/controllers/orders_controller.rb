@@ -47,6 +47,18 @@ class OrdersController < ApplicationController
       @activation= ServiceActivationSchedule.new(order_id: @order.id, customer_id: session[:customer_id],
       activation_date: @order.start_date, deactivation_date: @order.start_date + @order.validity_period.period.month)
       if @activation.save
+        @customer= Customer.find(session[:customer_id])
+        if @customer.is_insolvent
+          if Order.where(status: false, customer_id: @customer.id).count ==0
+            @alert= Alert.find_by(customer_id: @customer.id)
+            if @alert
+              @alert.destroy
+              @customer.is_insolvent= false
+              @customer.num_fails= 0
+              @customer.save
+            end
+          end
+        end
         flash[:notice]= "Payment result SUCCESS!"
       else
         flash[:notice]= "Something went wrong..try again!"
@@ -68,7 +80,6 @@ class OrdersController < ApplicationController
       #@customer.num_fails= Order.where(status: false, customer_id: @customer.id).count
       @customer.num_fails= @customer.num_fails + 1
       @customer.save
-      byebug
       if @customer.num_fails > 2 &&  !Alert.find_by(customer_id: @customer.id)
        @alert= Alert.new(customer_id: @customer.id, username: @customer.username, email: @customer.email, numOfFailedPayments: @customer.num_fails, lastRejectionDate:  DateTime.now)
        if @alert.save
@@ -82,6 +93,7 @@ class OrdersController < ApplicationController
          flash[:notice]= "Alert table has been updated!"
         end
       end
+      # flash[:notice]= "Payment failed..try again!"
     else
       flash[:notice]= "Something went wrong..try again!"
     end
