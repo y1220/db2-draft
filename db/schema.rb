@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_25_114128) do
+ActiveRecord::Schema.define(version: 2022_04_25_143016) do
 
   create_table "alerts", force: :cascade do |t|
     t.integer "customer_id", null: false
@@ -72,6 +72,24 @@ ActiveRecord::Schema.define(version: 2022_04_25_114128) do
     t.index ["validity_period_id"], name: "index_orders_on_validity_period_id"
   end
 
+  create_table "package_optionals", force: :cascade do |t|
+    t.integer "product_package_id", null: false
+    t.integer "optional_product_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["optional_product_id"], name: "index_package_optionals_on_optional_product_id"
+    t.index ["product_package_id"], name: "index_package_optionals_on_product_package_id"
+  end
+
+  create_table "package_validities", force: :cascade do |t|
+    t.integer "product_package_id", null: false
+    t.integer "validity_period_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["product_package_id"], name: "index_package_validities_on_product_package_id"
+    t.index ["validity_period_id"], name: "index_package_validities_on_validity_period_id"
+  end
+
   create_table "prices", force: :cascade do |t|
     t.integer "amount"
     t.integer "validity_period_id", null: false
@@ -95,8 +113,6 @@ ActiveRecord::Schema.define(version: 2022_04_25_114128) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "product_composition_id"
-    t.index ["product_composition_id"], name: "index_product_packages_on_product_composition_id"
   end
 
   create_table "product_types", force: :cascade do |t|
@@ -135,11 +151,14 @@ ActiveRecord::Schema.define(version: 2022_04_25_114128) do
   add_foreign_key "orders", "customers"
   add_foreign_key "orders", "product_packages"
   add_foreign_key "orders", "validity_periods"
+  add_foreign_key "package_optionals", "optional_products"
+  add_foreign_key "package_optionals", "product_packages"
+  add_foreign_key "package_validities", "product_packages"
+  add_foreign_key "package_validities", "validity_periods"
   add_foreign_key "prices", "products"
   add_foreign_key "prices", "validity_periods"
   add_foreign_key "product_compositions", "product_packages"
   add_foreign_key "product_compositions", "products"
-  add_foreign_key "product_packages", "product_compositions"
   add_foreign_key "service_activation_schedules", "customers"
   add_foreign_key "service_activation_schedules", "orders"
 end
