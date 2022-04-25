@@ -22,7 +22,7 @@
             <td><% @order.optional_products.each do |product| %>
                 <%=  product.monthly_fee%></br>
             <% end %></td>
-            <td><%= @total1 + @total2 %></td>
+            <td><%= @order.amount %></td>
         </tr>
 
         </table>

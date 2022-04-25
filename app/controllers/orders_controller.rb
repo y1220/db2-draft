@@ -12,7 +12,7 @@ class OrdersController < ApplicationController
       @optional_prices= @order.optional_products.map(&:monthly_fee)
       @total1= @prices.inject(:+)
       @total2= @optional_prices.inject(:+)
-      @order.amount= @total1 + @total2
+      @order.amount= @total2? @total1 + @total2 : @total1
       @order.save
       flash[:notice]= "Please check the deatils of order"
     else
