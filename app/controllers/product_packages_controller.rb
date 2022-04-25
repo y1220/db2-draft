@@ -13,22 +13,24 @@ class ProductPackagesController < ApplicationController
 
   def order_detail_form
     @order_type= session[:ordertype]
-    @products= ProductPackage.find(@order_type).products
-    @durations= ValidityPeriod.all.map(&:period)
-    @optionals= OptionalProduct.all
+    @package= ProductPackage.find(@order_type)
+    @products= @package.products
+    @durations= @package.validity_periods.map(&:period)
+    @optionals= @package.optional_products
   end
 
   def order_detail
     @order = Order.new
+    @package= ProductPackage.find(session[:ordertype])
     @order.assign_attributes(product_package_id: session[:ordertype], customer_id: session[:customer_id],
       validity_period_id: params[:duration])
       d=DateTime.new(params[:event]["start_date(1i)"].to_i, params[:event]["start_date(2i)"].to_i, params[:event]["start_date(3i)"].to_i)
       @order.start_date = d
       if @order.save
-          [1,2,3].each do |i|
-            if params["optionals#{i}"]
+          @package.optional_products.to_a.each do |optional|
+            if params["optionals#{optional.id}"]
               @order_optional = OptionalProductOrder.new
-              @order_optional.assign_attributes(optional_product_id: i,
+              @order_optional.assign_attributes(optional_product_id: optional.id,
               order_id: @order.id)
               @order_optional.save
             end
@@ -37,7 +39,8 @@ class ProductPackagesController < ApplicationController
         flash[:notice]= "Thank you for your order!"
         redirect_to("/orders/#{@order.id}/confirm_form")
       else
-        show_error("Something went wrong..try again!","/product_packages/order_type")
+        @packages = ProductPackage.all
+        show_error("Something went wrong..try again!","/product_packages/index")
       end
   end
 

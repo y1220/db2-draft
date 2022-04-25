@@ -21,8 +21,6 @@
             <td><%= @products.map{|product|
                 Price.where(validity_period_id: i+1, product_id: product.id)[0].amount
                 }.inject(:+) %> €</td>
-
-
         </tr>
         <%end%>
         </table>
@@ -50,14 +48,14 @@
             <div class="container_a">
                 <b>1. select a duration(months)</b><br/><br/>
                 <select name="duration" id="a2">
-                    <%= options_from_collection_for_select(ValidityPeriod.all, :id, :period) %>
+                    <%= options_from_collection_for_select(@package.validity_periods, :id, :period) %>
                 </select>
             </div>
             <div class="container_a">
                 <b>2. select optional product</b><br/><br/>
-                    <% OptionalProduct.all.each_with_index do |product, i| %>
-                        <%= check_box_tag "optionals#{i+1}", product.id ,false %>
-                        <%=  product.name %></br>
+                    <% @package.optional_products.each do |optional| %>
+                        <%= check_box_tag "optionals#{optional.id}", optional.id ,false %>
+                        <%=  optional.name %></br>
                     <% end %>
             </div>
             <div class="container_a">
