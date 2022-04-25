@@ -2,15 +2,13 @@
     <h1 class="users-heading">Product Package: <%=ProductPackage.find(@order_type).name%></h1>
     <div class="extab">
         <table id="customers">
-        <h2>Price List</h2>
+        <h3>Product List</h3>
         <tr>
             <th>Duration</th>
             <% @products.each do |product|%>
                 <th><%=product.name%></th>
             <%end%>
-            <% @optionals.each do |optional|%>
-                <th><%=optional.name%></th>
-            <%end%>
+            <th>Total Price</th>
         </tr>
         <% @durations.each_with_index do |duration, i|%>
         <tr>
@@ -20,13 +18,29 @@
                     <%= Price.where(validity_period_id: i+1, product_id: product.id)[0].amount%> €<br/>
                 </td>
             <%end%>
+            <td><%= @products.map{|product|
+                Price.where(validity_period_id: i+1, product_id: product.id)[0].amount
+                }.inject(:+) %> €</td>
+
+
+        </tr>
+        <%end%>
+        </table>
+        <br/>
+        <table id="customers">
+        <h3>Optional Product List(Static monthly fee regardeless of the period)</h3>
+        <tr>
+            <% @optionals.each do |optional|%>
+                <th><%=optional.name%></th>
+            <%end%>
+        </tr>
+        <tr>
             <% @optionals.each do |optional|%>
                 <td>
                     <%= optional.monthly_fee%> €<br/>
                 </td>
             <%end%>
         </tr>
-        <%end%>
         </table>
     </div>
 
