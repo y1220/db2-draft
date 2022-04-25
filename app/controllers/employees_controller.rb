@@ -59,5 +59,14 @@ class EmployeesController < ApplicationController
   end
 
   def statistics
+    @question1= "1. Number of total purchases per package."
+    @question2= "2. Number of total purchases per package and validity period."
+    @question3= "3. Total value of sales per package with and without the optional products."
+    @question4= "4. Average number of optional products sold together with each service package."
+    @question5= "5. List of insolvent users, suspended orders and alerts."
+    @question6= "6. Best seller optional product, i.e. the optional product with the greatest value of sales across all the sold service packages."
+    @packages= ProductPackage.all
+    @insolvents= Customer.where(is_insolvent: true)
+    @optionals= OptionalProduct.all
   end
 end

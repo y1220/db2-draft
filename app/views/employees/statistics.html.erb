@@ -1,3 +1,106 @@
 <h1 class="users-heading">Statistics</h1>
 <div class="extab">
+    <div class="container_a">
+        <b><%= @question1%></b><br/><br/>
+        <table id="customers">
+            <tr>
+                <th>Package name</th>
+                <th>Number of total purchases</th>
+            </tr>
+        <% @packages.each do |p|%>
+            <tr>
+                <td><%= p.name%></td>
+                <td><%= Order.where(product_package_id: p.id, status: true).count%></td>
+            </tr>
+        <%end%>
+        </table>
+    </div>
+     <div class="container_a">
+        <b><%= @question2%></b><br/><br/>
+        <table id="customers">
+            <tr>
+                <th>Package name (Validity Period)</th>
+                <th>Number of total purchases</th>
+            </tr>
+        <% @packages.each do |package|%>
+            <% package.validity_periods.each do |validity|%>
+                <tr>
+                    <td><%= "#{package.name} (#{validity.period} Months)"%></td>
+                    <td><%= Order.where(product_package_id: package.id, status: true, validity_period_id: validity.id).count%></td>
+                </tr>
+            <%end%>
+        <%end%>
+        </table>
+    </div>
+    <div class="container_a">
+        <b><%= @question3%></b><br/><br/>
+        <table id="customers">
+            <tr>
+                <th>Package name</th>
+                <th>Total value of purchases (With Optional)</th>
+                <th>Total value of purchases (Without Optional)</th>
+            </tr>
+        <% @packages.each do |package|%>
+            <tr>
+                <td><%= package.name%></td>
+                <td><%= Order.where(product_package_id: package.id, status: true).select{|o|
+                o.optional_products.count>0}.map(&:amount).inject(:+)%></td>
+                <td><%= Order.where(product_package_id: package.id, status: true).select{|o|
+                o.optional_products.count==0}.map(&:amount).inject(:+)%></td>
+            </tr>
+        <%end%>
+        </table>
+    </div>
+    <div class="container_a">
+        <b><%= @question4%></b><br/><br/>
+        <table id="customers">
+            <tr>
+                <th>Package name</th>
+                <th>Average number of optional products sold</th>
+            </tr>
+        <% @packages.each do |package|%>
+            <tr>
+                <td><%= package.name%></td>
+                <td><%= Order.where(product_package_id: package.id, status: true).select{|o|
+                o.optional_products.count>0}.count.to_f/ Order.where(product_package_id: package.id, status: true).count.to_f%></td>
+            </tr>
+        <%end%>
+        </table>
+    </div><div class="container_a">
+        <b><%= @question5%></b><br/><br/>
+        <table id="customers">
+            <tr>
+                <th>Insolvent username</th>
+                <th>Email</th>
+                <th>Suspended Order Ids</th>
+                <th>Alert Id</th>
+
+            </tr>
+        <% @insolvents.each do |customer|%>
+            <tr>
+                <td><%= "#{customer.username} "%></td>
+                <td><%= "#{customer.email} "%></td>
+                <td><%= Order.where(customer_id: customer.id, status: false).map(&:id)%></td>
+                <td><%= Alert.where(customer_id: customer.id).first.id%></td>
+            </tr>
+        <%end%>
+        </table>
+    </div>
+    <div class="container_a">
+        <b><%= @question6%></b><br/><br/>
+        <table id="customers">
+            <tr>
+                <th>Optional Product name</th>
+                <th>Number of sales</th>
+                <th>Total amount of sales</th>
+            </tr>
+        <% @optionals.each do |optional|%>
+            <tr>
+                <td><%= optional.name%></td>
+                <td><%= Order.where(status: true).map{|o| o.optional_products}.flatten.select{|o2| o2.id == optional.id}.count%></td>
+                <td><%= Order.where(status: true).map{|o| o.optional_products}.flatten.select{|o2| o2.id == optional.id}.map(&:monthly_fee).inject(:+)%></td>
+            </tr>
+        <%end%>
+        </table>
+    </div>
 </div>
