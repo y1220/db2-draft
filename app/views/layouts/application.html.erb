@@ -15,18 +15,24 @@
   <nav class="navbar">
       `<ul>
           <li><%= link_to("Telcom","/")%></li>
-          <% if @name != "Login"%>
+          <% if @name != "Employee" && @name != "Login"%>
           <li><%= link_to("Purchased list","/customers/activated/#{@current_user.id}")%></li>
+          <% elsif @name == "Employee"%>
+          <li><%= link_to("Package creation","/employees/create_package_form")%></li>
+          <li><%= link_to("Optional Product creation","/employees/create_optional_form")%></li>
+          <li><%= link_to("Statistics","/employees/statistics")%></li>
           <%end%>
           <li><%= link_to("Service","/product_packages/index")%></li>
           <li><%= link_to("Order Reset","/orders/reset")%></li>
           <div class="search">
             <% if @name == "Login"%>
             <li><%= link_to("Register","/customers/register")%></li>
-            <% else %>
+            <% elsif @name != "Employee"%>
             <li><%= link_to("#{@name}","/customers/personal/#{@current_user.id}" )%></li>
             &nbsp;&nbsp;
-            <li><%= link_to 'logout', customers_logout_path, method: :post %></li>
+            <li><%= link_to 'Logout', customers_logout_path, method: :post %></li>
+            <% else%>
+            <li><%= link_to 'Logout', customers_logout_path, method: :post %></li>
             <% end %>
           </div>
       </ul>

@@ -29,11 +29,17 @@ Rails.application.routes.draw do
     get "/reset", action: "reset"
   end
 
+  namespace :employees do
+    get "/index" , action: "index"
+    get "/create_package_form" , action: "create_package_form"
+    get "/create_optional_form" , action: "create_optional_form"
+    get "/statistics" , action: "statistics"
+  end
+
 
   get '/' => "home#index"
   get 'optional_products/index'
   get 'alerts/index'
   get 'products/index'
-  get 'employees/index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

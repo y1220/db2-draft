@@ -39,6 +39,12 @@ class CustomersController < ApplicationController
   end
 
   def login
+    @emp= Employee.find_by(email: params[:email], password: params[:password])
+    if @emp
+      session[:employee_id] = @emp.id
+        flash[:notice]= "Loggined successfully!"
+        redirect_to("/employees/index")
+    else
     @customer = Customer.find_by(email: params[:email], password: params[:password])
       if @customer
         session[:customer_id] = @customer.id
@@ -48,10 +54,12 @@ class CustomersController < ApplicationController
         flash[:notice]= "Something went wrong..try again!"
         render("/customers/login_form")
       end
+    end
   end
 
   def logout
     session[:customer_id] = nil
+    session[:employee_id] = nil
     flash[:notice]= "Logouted successfully!"
     redirect_to("/customers/login_form")
   end
