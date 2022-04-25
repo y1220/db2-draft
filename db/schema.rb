@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_25_093010) do
+ActiveRecord::Schema.define(version: 2022_04_25_114128) do
 
   create_table "alerts", force: :cascade do |t|
     t.integer "customer_id", null: false
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 2022_04_25_093010) do
     t.integer "validity_period_id"
     t.datetime "start_date"
     t.boolean "status"
+    t.integer "amount"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["product_package_id"], name: "index_orders_on_product_package_id"
     t.index ["validity_period_id"], name: "index_orders_on_validity_period_id"

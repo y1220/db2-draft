@@ -6,13 +6,15 @@ class OrdersController < ApplicationController
     @order = Order.find_by(id: params[:id], customer_id: session[:customer_id])
     if @order
       @package= ProductPackage.find(@order.product_package_id)
-      flash[:notice]= "Please check the deatils of order"
       @prices= @order.product_package.products.map {|product|
         Price.where(validity_period_id: @order.validity_period_id, product_id: product.id)[0].amount
       }
       @optional_prices= @order.optional_products.map(&:monthly_fee)
       @total1= @prices.inject(:+)
       @total2= @optional_prices.inject(:+)
+      @order.amount= @total1 + @total2
+      @order.save
+      flash[:notice]= "Please check the deatils of order"
     else
       flash[:notice]= "Something went wrong..try again!"
     end
@@ -82,6 +84,9 @@ class OrdersController < ApplicationController
       @customer.save
       if @customer.num_fails > 2 &&  !Alert.find_by(customer_id: @customer.id)
        @alert= Alert.new(customer_id: @customer.id, username: @customer.username, email: @customer.email, numOfFailedPayments: @customer.num_fails, lastRejectionDate:  DateTime.now)
+       @alert.numOfFailedPayments = @customer.num_fails
+       @alert.lastRejectionDate = DateTime.now
+       @alert.amount = @order.amount
        if @alert.save
         flash[:notice]= "You have added into alert table!"
        end
@@ -89,6 +94,7 @@ class OrdersController < ApplicationController
         @alert= Alert.find_by(customer_id: @customer.id)
         @alert.numOfFailedPayments = @customer.num_fails
         @alert.lastRejectionDate = DateTime.now
+        @alert.amount = @order.amount
         if @alert.save
          flash[:notice]= "Alert table has been updated!"
         end

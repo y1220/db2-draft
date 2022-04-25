@@ -3,7 +3,9 @@ class ApplicationController < ActionController::Base
     before_action :set_current_user
 
     def set_current_user
-        @emp= Employee.find_by(id: session[:employee_id])
+        if session[:employee_id]
+         @emp= Employee.find_by(id: session[:employee_id])
+        end
         @current_user= Customer.find_by(id: session[:customer_id])
         if @emp
             @name= "Employee"
