@@ -22,25 +22,29 @@ class ProductPackagesController < ApplicationController
   def order_detail
     @order = Order.new
     @package= ProductPackage.find(session[:ordertype])
-    @order.assign_attributes(product_package_id: session[:ordertype], customer_id: session[:customer_id],
-      validity_period_id: params[:duration])
-      d=DateTime.new(params[:event]["start_date(1i)"].to_i, params[:event]["start_date(2i)"].to_i, params[:event]["start_date(3i)"].to_i)
-      @order.start_date = d
-      if @order.save
-          @package.optional_products.to_a.each do |optional|
-            if params["optionals#{optional.id}"]
-              @order_optional = OptionalProductOrder.new
-              @order_optional.assign_attributes(optional_product_id: optional.id,
-              order_id: @order.id)
-              @order_optional.save
+    if session[:customer_id]
+      @order.assign_attributes(product_package_id: session[:ordertype], customer_id: session[:customer_id],
+        validity_period_id: params[:duration])
+        d=DateTime.new(params[:event]["start_date(1i)"].to_i, params[:event]["start_date(2i)"].to_i, params[:event]["start_date(3i)"].to_i)
+        @order.start_date = d
+        if @order.save
+            @package.optional_products.to_a.each do |optional|
+              if params["optionals#{optional.id}"]
+                @order_optional = OptionalProductOrder.new
+                @order_optional.assign_attributes(optional_product_id: optional.id,
+                order_id: @order.id)
+                @order_optional.save
+              end
             end
-          end
-        session[:ordertype]=nil
-        flash[:notice]= "Thank you for your order!"
-        redirect_to("/orders/#{@order.id}/confirm_form")
+          session[:ordertype]=nil
+          flash[:notice]= "Thank you for your order!"
+          redirect_to("/orders/#{@order.id}/confirm_form")
+        else
+          @packages = ProductPackage.all
+          show_error("Something went wrong..try again!","/product_packages/index")
+        end
       else
-        @packages = ProductPackage.all
-        show_error("Something went wrong..try again!","/product_packages/index")
+        show_error("To forward operation, you neeed to login!","/customers/login_form")
       end
   end
 
